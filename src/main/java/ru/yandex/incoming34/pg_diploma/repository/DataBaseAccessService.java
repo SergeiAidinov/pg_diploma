@@ -4,10 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Service
 public class DataBaseAccessService {
@@ -24,6 +21,19 @@ public class DataBaseAccessService {
             PreparedStatement stmt = connection.prepareStatement("SELECT range FROM aircrafts_data WHERE aircraft_code = ?;");
             stmt.setString(1, aircraftId);
             ResultSet rs = stmt.executeQuery();
+            if (rs.next()) distance = rs.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return distance;
+    }
+
+    public Integer callFunction(String aircraftId) {
+        Integer distance = null;
+        try (Connection connection = dataSource.getConnection()){
+            CallableStatement callableStatement = connection.prepareCall("{call get_range_by_id(?)}");
+            callableStatement.setString(1, aircraftId);
+            ResultSet rs = callableStatement.executeQuery();
             if (rs.next()) distance = rs.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);

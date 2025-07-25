@@ -25,4 +25,9 @@ public class Controller {
         return dataBaseAccessService.getRangeByAircraftId(aircraftId);
     }
 
+    @GetMapping("/func/{aircraftId}")
+    public Integer callFunction(@RequestParam String aircraftId){
+        return dataBaseAccessService.callFunction(aircraftId);
+    }
+
 }
