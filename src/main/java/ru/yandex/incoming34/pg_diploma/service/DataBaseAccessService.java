@@ -1,10 +1,12 @@
-package ru.yandex.incoming34.pg_diploma.repository;
+package ru.yandex.incoming34.pg_diploma.service;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class DataBaseAccessService {
@@ -39,5 +41,20 @@ public class DataBaseAccessService {
             throw new RuntimeException(e);
         }
         return distance;
+    }
+
+    public Map<Integer, Integer> quantityOfBookingsByQuantityOfPassengersInOneBooking() {
+        Map<Integer, Integer> result = new HashMap<>();
+        try (Connection connection = dataSource.getConnection()){
+            CallableStatement callableStatement = connection.prepareCall("{call quantity_of_bookings_by_quantity_of_passengers_in_one_booking()}");
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                result.put(rs.getInt(1), rs.getInt(2));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }

@@ -7,6 +7,8 @@
 
     <include
             file="db/changelog/functions/get_range_by_id.xml"/>
+    <include
+            file="db/changelog/functions/quantity_of_bookings_by_quantity_of_passengers_in_one_booking.xml"/>
 
 
 </databaseChangeLog>
