@@ -36,4 +36,9 @@ public class Controller {
     public Map<Integer, Integer> quantityOfBookingsByQuantityOfPassengersInOneBooking() {
         return dataBaseAccessService.quantityOfBookingsByQuantityOfPassengersInOneBooking();
     }
+
+    @GetMapping("/passenger_load_factor")
+    public/* Map<Integer, Integer>*/ void passengerLoadFactor() {
+       dataBaseAccessService.passengerLoadFactor();
+    }
 }

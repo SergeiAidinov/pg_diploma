@@ -43,8 +43,3 @@ begin
         where passenger_load_factor between p_load_factor_min and p_load_factor_max;
 end;
 $$;
-
-
-
-
-

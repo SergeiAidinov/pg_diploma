@@ -57,4 +57,18 @@ public class DataBaseAccessService {
         }
         return result;
     }
+
+    public void passengerLoadFactor() {
+        try (Connection connection = dataSource.getConnection()){
+            CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor()}");
+            ResultSet rs = callableStatement.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(rs.getInt(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+       // return result;
+    }
 }
