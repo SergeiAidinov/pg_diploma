@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,11 +61,12 @@ public class DataBaseAccessService {
 
     public void passengerLoadFactor() {
         try (Connection connection = dataSource.getConnection()){
-            CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor()}");
+            CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor(?, ?)}");
+            callableStatement.setBigDecimal(1, new BigDecimal(0.95));
+            callableStatement.setBigDecimal(2, new BigDecimal(0.97));
             ResultSet rs = callableStatement.executeQuery();
-
             while (rs.next()) {
-                System.out.println(rs.getInt(1));
+                System.out.println(rs.getInt(1) + " " + rs.getString(2));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
