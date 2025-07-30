@@ -8,3 +8,10 @@
 4. Разработка простого бэк - приложения на языке программирования Java для вызова процедур и отображения результатов.
 5. Подготовка презентации и демонстрация работы системы на тестовых данных.
 
+Deploy DB:
+
+sergei@debian:/$ psql -U sergei -d postgres -a -f "/opt/Demo_pgsql/demo-big-20170815.sql"
+
+DB size:
+
+SELECT pg_size_pretty( pg_database_size( 'demo' ) );
