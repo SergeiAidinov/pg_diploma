@@ -12,3 +12,5 @@ begin
                  group by ticket_qty order by ticket_qty;
 end;
 $$;
+
+--rollback drop function quantity_of_bookings_by_quantity_of_passengers_in_one_booking();
