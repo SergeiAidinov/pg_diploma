@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+  http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <include
+            file="db/changelog/functions/get_range_by_id.xml"/>
+    <include
+            file="db/changelog/functions/quantity_of_bookings_by_quantity_of_passengers_in_one_booking.xml"/>
+    <include
+            file="db/changelog/functions/passenger_load_factor.xml"/>
+
+</databaseChangeLog>
