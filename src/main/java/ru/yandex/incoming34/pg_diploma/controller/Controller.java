@@ -37,4 +37,9 @@ public class Controller {
     public List<PassengerLoadFactor> passengerLoadFactor(@RequestBody PassengerLoadFactorQuery passengerLoadFactorQuery) {
        return dataBaseAccessService.passengerLoadFactor(passengerLoadFactorQuery);
     }
+
+    @PostMapping("/passenger_load_factor_optimized/")
+    public List<PassengerLoadFactor> passengerLoadFactorOptimized(@RequestBody PassengerLoadFactorQuery passengerLoadFactorQuery) {
+        return dataBaseAccessService.passengerLoadFactorOptimized(passengerLoadFactorQuery);
+    }
 }

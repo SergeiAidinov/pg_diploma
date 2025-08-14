@@ -9,6 +9,7 @@ declare
     var_aircraft_code  varchar(3);
     rec                     record;
 begin
+    truncate table flights_load_factor;
     drop table if exists aircraft_quantity_seats;
     create temp table aircraft_quantity_seats
     (

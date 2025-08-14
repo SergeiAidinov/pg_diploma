@@ -20,5 +20,9 @@
 
     <include
             file="db/changelog/calls/call_fuction_fill_table_flights_load_factor.xml"/>
+    <include
+            file="db/changelog/functions/passenger_load_factor_optimized.xml"/>
+    <include
+            file="db/changelog/indexes/flights_load_factor_idx.xml"/>
 
 </databaseChangeLog>

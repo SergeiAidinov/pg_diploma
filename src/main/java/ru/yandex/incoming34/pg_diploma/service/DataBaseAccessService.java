@@ -72,4 +72,27 @@ public class DataBaseAccessService {
         }
         return passengerLoadFactors;
     }
+
+    public List<PassengerLoadFactor> passengerLoadFactorOptimized(PassengerLoadFactorQuery passengerLoadFactorQuery) {
+        List<PassengerLoadFactor> passengerLoadFactors;
+        try (Connection connection = dataSource.getConnection()) {
+            CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor_optimized(?, ?)}");
+            callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
+            callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));
+            ResultSet rs = callableStatement.executeQuery();
+            passengerLoadFactors = new ArrayList<>();
+            while (rs.next()) {
+                passengerLoadFactors.add(
+                        new PassengerLoadFactor(rs.getInt("flight_id"),
+                                rs.getString("aircraft_code"),
+                                rs.getShort("totally_seats"),
+                                rs.getShort("tickets_sold"),
+                                rs.getDouble("passenger_lf")
+                        ));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return passengerLoadFactors;
+    }
 }
