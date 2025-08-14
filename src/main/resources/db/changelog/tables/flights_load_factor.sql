@@ -6,3 +6,5 @@ create table flights_load_factor (
                                      load_factor   decimal not null,
                                      constraint flight_id_fk foreign key (flight_id) references flights (flight_id)
 );
+
+--drop table if exists flights_load_factor;
