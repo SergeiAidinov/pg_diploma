@@ -56,7 +56,16 @@ begin
                                                     2);
             raise notice 'f_id: %, tickets_sold: %, aircraft_code: %, passenger_load_factor: % ', r.flight_id, tickets_sold, var_aircraft_code, passenger_load_factor;
             -- select into tickets_sold 0;
-            insert into flights_load_factor (flight_id, load_factor) values (r.flight_id, passenger_load_factor);
+            insert into flights_load_factor ( aircraft_code
+                                            , flight_id
+                                            , load_factor
+                                            , seats_sold
+                                            , seats_totally)
+            values ( var_aircraft_code
+                   , r.flight_id
+                   , passenger_load_factor
+                   , tickets_sold
+                   , totally_seats );
         end loop;
 end;
 
