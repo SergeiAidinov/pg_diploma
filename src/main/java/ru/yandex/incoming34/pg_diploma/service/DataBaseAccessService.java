@@ -8,10 +8,8 @@ import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class DataBaseAccessService {
@@ -56,7 +54,9 @@ public class DataBaseAccessService {
             CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor(?, ?)}");
             callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
             callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));
+            System.out.println("===> " + LocalDateTime.now());
             ResultSet rs = callableStatement.executeQuery();
+            System.out.println("===> " + LocalDateTime.now());
             passengerLoadFactors = new ArrayList<>();
             while (rs.next()) {
                 passengerLoadFactors.add(
@@ -79,9 +79,15 @@ public class DataBaseAccessService {
             CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor_optimized(?, ?)}");
             callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
             callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));
+            System.out.println("===> " + LocalDateTime.now());
             ResultSet rs = callableStatement.executeQuery();
+            System.out.println("===> " + LocalDateTime.now());
             passengerLoadFactors = new ArrayList<>();
             while (rs.next()) {
+                if (Objects.nonNull(rs.getTimestamp("exec_time"))){
+                    Timestamp timestamp = rs.getTimestamp("exec_time");
+                    System.out.println("===> " + timestamp.toLocalDateTime());
+                }
                 passengerLoadFactors.add(
                         new PassengerLoadFactor(rs.getInt("flight_id"),
                                 rs.getString("aircraft_code"),
