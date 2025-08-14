@@ -1,5 +1,3 @@
-
-
 create table flights_load_factor (
                                      flight_id bigint,
                                      load_factor decimal not null ,
