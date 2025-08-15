@@ -1,13 +1,18 @@
 package ru.yandex.incoming34.pg_diploma.service;
 
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import ru.yandex.incoming34.pg_diploma.dto.MetaData;
 import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactor;
 import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -15,9 +20,11 @@ import java.util.*;
 public class DataBaseAccessService {
 
     private final DataSource dataSource;
+    private final CustomInMemoryCache customInMemoryCache;
 
-    public DataBaseAccessService(ApplicationContext applicationContext) {
+    public DataBaseAccessService(ApplicationContext applicationContext, CustomInMemoryCache customInMemoryCache) {
         dataSource = (DataSource) applicationContext.getBean("dataSource");
+        this.customInMemoryCache = customInMemoryCache;
     }
 
     public Integer getRangeByAircraftId(String aircraftId) {
@@ -74,21 +81,22 @@ public class DataBaseAccessService {
     }
 
     public List<PassengerLoadFactor> passengerLoadFactorOptimized(PassengerLoadFactorQuery passengerLoadFactorQuery) {
-        List<PassengerLoadFactor> passengerLoadFactors;
+        List<PassengerLoadFactor> passengerLoadFactors = new ArrayList<>();
+        ;
         try (Connection connection = dataSource.getConnection()) {
             CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor_optimized(?, ?)}");
             callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
             callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));
-            System.out.println("===> " + LocalDateTime.now());
             ResultSet rs = callableStatement.executeQuery();
-            System.out.println("===> " + LocalDateTime.now());
-            passengerLoadFactors = new ArrayList<>();
+            //passengerLoadFactors
+            int order = 0;
+            JSONObject jsonObjectMetaData;
             while (rs.next()) {
-                if (Objects.nonNull(rs.getTimestamp("exec_time"))){
-                    Timestamp timestamp = rs.getTimestamp("exec_time");
-                    System.out.println("===> " + timestamp.toLocalDateTime());
-                }
+                if (Objects.nonNull(rs.getString(MetaData.METADATA_FIELD_NAME)))
+                    jsonObjectMetaData = new JSONObject(rs.getString(MetaData.METADATA_FIELD_NAME));
+
                 passengerLoadFactors.add(
+
                         new PassengerLoadFactor(rs.getInt("flight_id"),
                                 rs.getString("aircraft_code"),
                                 rs.getShort("totally_seats"),

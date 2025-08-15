@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PassengerLoadFactorQuery {
-    private double LoadFactorMin;
-    private double LoadFactorMax;
+    private Double loadFactorMin;
+    private Double loadFactorMax;
+    private Integer pageNumber;
 }
