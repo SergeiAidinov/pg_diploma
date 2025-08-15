@@ -11,6 +11,8 @@ import java.time.temporal.ChronoUnit;
 public class MetaData {
 
     public static final String METADATA_FIELD_NAME = "metadata";
+    public static final Integer PAGE_SIZE = 50;
+
 
     private final LocalDateTime startTime;
     private final LocalDateTime endTime;
@@ -20,7 +22,6 @@ public class MetaData {
     public MetaData(JSONObject jsonObject, Long totalRecords) {
         this.startTime = LocalDateTime.parse((CharSequence) jsonObject.get("start_time"));
         this.totalRecords = totalRecords;
-        ;
         this.endTime = LocalDateTime.parse((CharSequence) jsonObject.get("end_time"));;
         this.executionTime = ChronoUnit.MILLIS.between(startTime, endTime);
     }
