@@ -41,34 +41,35 @@ public class CustomInMemoryCache {
                 passengerLoadFactorQuery.getLoadFactorMax().equals(newQuery.getLoadFactorMax());*/
     }
 
-    private synchronized boolean refreshCache(PassengerLoadFactorQuery passengerLoadFactorQuery, Map<Integer, PassengerLoadFactor> cache) {
-        return true;
-    }
-
-
     public synchronized Pair<MetaData, List<PassengerLoadFactor>> passengerLoadFactor(PassengerLoadFactorQuery passengerLoadFactorQuery) {
         return null;
     }
 
     public synchronized LoadFactorsWithMetaData passengerLoadFactorOptimized(PassengerLoadFactorQuery passengerLoadFactorQuery) {
-        if (hasSameSearchCriteria(passengerLoadFactorQuery)) {
-            List<PassengerLoadFactor> loadFactors = new ArrayList<>(cache.subMap(MetaData.PAGE_SIZE * passengerLoadFactorQuery.getPageNumber(),
-                    true,
-                    MetaData.PAGE_SIZE * passengerLoadFactorQuery.getPageNumber() + MetaData.PAGE_SIZE,
-                    true).values());
-            return new LoadFactorsWithMetaData(currentMetaData, loadFactors);
-        }
+        if (hasSameSearchCriteria(passengerLoadFactorQuery) == false) refreshCache(passengerLoadFactorQuery, "passenger_load_factor_optimized");
+        List<PassengerLoadFactor> loadFactors = new ArrayList<>(cache.subMap(
+                MetaData.PAGE_SIZE * (passengerLoadFactorQuery.getPageNumber() - 1),
+                true,
+                MetaData.PAGE_SIZE * (passengerLoadFactorQuery.getPageNumber() - 1) + MetaData.PAGE_SIZE - 1,
+                true).values());
+        return new LoadFactorsWithMetaData(currentMetaData, loadFactors);
+    }
+
+    private void refreshCache(PassengerLoadFactorQuery passengerLoadFactorQuery, String functionName){
         cache.clear();
         currentQuery = passengerLoadFactorQuery;
         List<PassengerLoadFactor> passengerLoadFactors = new ArrayList<>();
         JSONObject jsonObjectMetaData = null;
         int order = 0;
         try (Connection connection = dataSource.getConnection()) {
-            CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor_optimized(?, ?)}");
+            String sql = new StringBuilder("{call ")
+                    .append(functionName)
+                    .append("(?, ?)}")
+                    .toString();
+            CallableStatement callableStatement = connection.prepareCall(sql);
             callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
             callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));
             ResultSet rs = callableStatement.executeQuery();
-            //passengerLoadFactors
             while (rs.next()) {
                 if (Objects.nonNull(rs.getString(MetaData.METADATA_FIELD_NAME)))
                     jsonObjectMetaData = new JSONObject(rs.getString(MetaData.METADATA_FIELD_NAME));
@@ -84,9 +85,6 @@ public class CustomInMemoryCache {
             throw new RuntimeException(e);
         }
         currentMetaData = new MetaData(jsonObjectMetaData, (long) order);
-        //return passengerLoadFactors;
-        System.out.println();
-        passengerLoadFactorOptimized(passengerLoadFactorQuery);
-        return null;
     }
+
 }
