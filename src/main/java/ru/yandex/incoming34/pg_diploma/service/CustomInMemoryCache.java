@@ -3,7 +3,6 @@ package ru.yandex.incoming34.pg_diploma.service;
 import lombok.Getter;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import ru.yandex.incoming34.pg_diploma.dto.LoadFactorsWithMetaData;
 import ru.yandex.incoming34.pg_diploma.dto.MetaData;
@@ -25,7 +24,8 @@ public class CustomInMemoryCache {
     private final DataSource dataSource;
     private PassengerLoadFactorQuery currentQuery;
     private MetaData currentMetaData;
-    private TreeMap<Integer, PassengerLoadFactor> cache = new TreeMap<>();
+    private String lastCalledFunctionName;
+    private final TreeMap<Integer, PassengerLoadFactor> cache = new TreeMap<>();
 
     public CustomInMemoryCache(ApplicationContext applicationContext) {
         dataSource = (DataSource) applicationContext.getBean("dataSource");
@@ -33,20 +33,15 @@ public class CustomInMemoryCache {
 
 
 
-    private boolean hasSameSearchCriteria(PassengerLoadFactorQuery newQuery) {
+    private boolean hasSameSearchCriteriaAndFunctionName(PassengerLoadFactorQuery newQuery, String functionName) {
         if (Objects.isNull(currentQuery)) return false;
         return Objects.equals(currentQuery.getLoadFactorMin(), newQuery.getLoadFactorMin())
-                && Objects.equals(currentQuery.getLoadFactorMax(), newQuery.getLoadFactorMax());
-        /*return passengerLoadFactorQuery.getLoadFactorMin().equals(newQuery.getLoadFactorMin()) &&
-                passengerLoadFactorQuery.getLoadFactorMax().equals(newQuery.getLoadFactorMax());*/
+                && Objects.equals(currentQuery.getLoadFactorMax(), newQuery.getLoadFactorMax())
+                && Objects.equals(lastCalledFunctionName, functionName);
     }
 
-    public synchronized Pair<MetaData, List<PassengerLoadFactor>> passengerLoadFactor(PassengerLoadFactorQuery passengerLoadFactorQuery) {
-        return null;
-    }
-
-    public synchronized LoadFactorsWithMetaData passengerLoadFactorOptimized(PassengerLoadFactorQuery passengerLoadFactorQuery) {
-        if (hasSameSearchCriteria(passengerLoadFactorQuery) == false) refreshCache(passengerLoadFactorQuery, "passenger_load_factor_optimized");
+    public synchronized LoadFactorsWithMetaData getDataFromCacheOrCallLoadFactorFunction(PassengerLoadFactorQuery passengerLoadFactorQuery, String functionName) {
+        if (!hasSameSearchCriteriaAndFunctionName(passengerLoadFactorQuery, functionName)) refreshCache(passengerLoadFactorQuery, functionName);
         List<PassengerLoadFactor> loadFactors = new ArrayList<>(cache.subMap(
                 MetaData.PAGE_SIZE * (passengerLoadFactorQuery.getPageNumber() - 1),
                 true,
@@ -58,14 +53,13 @@ public class CustomInMemoryCache {
     private void refreshCache(PassengerLoadFactorQuery passengerLoadFactorQuery, String functionName){
         cache.clear();
         currentQuery = passengerLoadFactorQuery;
-        List<PassengerLoadFactor> passengerLoadFactors = new ArrayList<>();
+        lastCalledFunctionName = functionName;
         JSONObject jsonObjectMetaData = null;
         int order = 0;
         try (Connection connection = dataSource.getConnection()) {
-            String sql = new StringBuilder("{call ")
-                    .append(functionName)
-                    .append("(?, ?)}")
-                    .toString();
+            String sql = "{call " +
+                    functionName +
+                    "(?, ?)}";
             CallableStatement callableStatement = connection.prepareCall(sql);
             callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
             callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Service
+//@Service
 public class DataBaseServiceForCachableData {
 
     private final DataSource dataSource;

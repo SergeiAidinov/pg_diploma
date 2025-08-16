@@ -10,7 +10,7 @@ create or replace function passenger_load_factor_optimized(
                 totally_seats smallint,
                 tickets_sold  smallint,
                 passenger_lf decimal,
-                metadata    json
+                metadata json
             )
     language plpgsql
 
@@ -55,6 +55,7 @@ begin
     select into metadata json_build_object(
             'start_time', start_time,
             'end_time', end_time,
+        'function_name', 'passenger_load_factor_optimized(numeric, numeric)',
     'execution_time', execution_time
     );
 

@@ -10,6 +10,4 @@ public class LoadFactorsWithMetaData {
 
     private final MetaData metaData;
     private final List<PassengerLoadFactor> loadFactors;
-
-
 }
