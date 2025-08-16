@@ -42,10 +42,15 @@ begin
                                    , (select round(((cast(data_from_db.tickets_sold as decimal)) /
                                                     (cast(data_from_db.seats_totally as decimal))),
                                                    2))                                                 as passenger_load_factor
-                                   , (select null::json)
+                                   , (select null::json) as metadata
                               from data_from_db)
 
-        select flight_id, aircraft_code, totally_seats, tickets_sold, passenger_lf, metadata
+        select calculations.flight_id
+             , calculations.aircraft_code
+             , calculations.totally_seats
+             , calculations.tickets_sold
+             , calculations.passenger_load_factor
+             , calculations.metadata
         from calculations
         where passenger_load_factor between p_load_factor_min and p_load_factor_max;
 
