@@ -31,8 +31,6 @@ public class CustomInMemoryCache {
         dataSource = (DataSource) applicationContext.getBean("dataSource");
     }
 
-
-
     private boolean hasSameSearchCriteriaAndFunctionName(PassengerLoadFactorQuery newQuery, String functionName) {
         if (Objects.isNull(currentQuery)) return false;
         return Objects.equals(currentQuery.getLoadFactorMin(), newQuery.getLoadFactorMin())

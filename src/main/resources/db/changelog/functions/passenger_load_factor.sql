@@ -45,10 +45,7 @@ begin
                                    , (select null::json)
                               from data_from_db)
 
-
-
-
-    select *
+        select flight_id, aircraft_code, totally_seats, tickets_sold, passenger_lf, metadata
         from calculations
         where passenger_load_factor between p_load_factor_min and p_load_factor_max;
 
@@ -67,7 +64,6 @@ begin
                          null::smallint,
                          null::decimal,
                          metadata;
-    -- return  query select * from result;
 end;
 $$;
 

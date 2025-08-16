@@ -1,30 +1,22 @@
 package ru.yandex.incoming34.pg_diploma.service;
 
-import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import ru.yandex.incoming34.pg_diploma.dto.MetaData;
-import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactor;
-import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
 
 import javax.sql.DataSource;
-import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class DataBaseAccessService {
 
     private final DataSource dataSource;
-    private final CustomInMemoryCache customInMemoryCache;
 
-    public DataBaseAccessService(ApplicationContext applicationContext, CustomInMemoryCache customInMemoryCache) {
+    public DataBaseAccessService(ApplicationContext applicationContext) {
         dataSource = (DataSource) applicationContext.getBean("dataSource");
-        this.customInMemoryCache = customInMemoryCache;
     }
 
     public Integer getRangeByAircraftId(String aircraftId) {
