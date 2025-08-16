@@ -2,16 +2,13 @@ package ru.yandex.incoming34.pg_diploma.service;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactor;
-import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
 
 import javax.sql.DataSource;
-import java.math.BigDecimal;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
 
 @Service
 public class DataBaseAccessService {
@@ -48,28 +45,5 @@ public class DataBaseAccessService {
             throw new RuntimeException(e);
         }
         return result;
-    }
-
-    public List<PassengerLoadFactor> passengerLoadFactor(PassengerLoadFactorQuery passengerLoadFactorQuery) {
-        List<PassengerLoadFactor> passengerLoadFactors;
-        try (Connection connection = dataSource.getConnection()) {
-            CallableStatement callableStatement = connection.prepareCall("{call passenger_load_factor(?, ?)}");
-            callableStatement.setBigDecimal(1, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMin()));
-            callableStatement.setBigDecimal(2, BigDecimal.valueOf(passengerLoadFactorQuery.getLoadFactorMax()));
-            ResultSet rs = callableStatement.executeQuery();
-            passengerLoadFactors = new ArrayList<>();
-            while (rs.next()) {
-                passengerLoadFactors.add(
-                        new PassengerLoadFactor(rs.getInt("flight_id"),
-                                rs.getString("aircraft_code"),
-                                rs.getShort("totally_seats"),
-                                rs.getShort("tickets_sold"),
-                                rs.getDouble("passenger_lf")
-                        ));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return passengerLoadFactors;
     }
 }

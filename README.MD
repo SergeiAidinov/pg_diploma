@@ -15,3 +15,5 @@ sergei@debian:/$ psql -U sergei -d postgres -a -f "/opt/Demo_pgsql/demo-big-2017
 DB size:
 
 SELECT pg_size_pretty( pg_database_size( 'demo' ) );
+
+Подключение к базе: PGPASSWORD=postgres psql -h localhost -U postgres -d demo

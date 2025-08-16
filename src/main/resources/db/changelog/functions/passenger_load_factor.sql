@@ -4,16 +4,24 @@ create or replace function passenger_load_factor(
 )
     returns table
             (
-                flight_id     int,
-                aircraft_code char(3),
+                flight_id     bigint,
+                aircraft_code varchar(3),
                 totally_seats smallint,
                 tickets_sold  smallint,
-                passenger_lf  decimal
+                passenger_lf decimal,
+                metadata     json
             )
     language plpgsql
 as
 $$
+declare
+    start_time     timestamp;
+    end_time       timestamp;
+    execution_time interval;
+    metadata       json;
 begin
+    select into start_time clock_timestamp();
+    raise notice 'Выборка данных началась: %', start_time;
     return query
         with totally_seats as (select seats.aircraft_code, count(seats.seat_no) as seats_totally
                               from seats
@@ -27,17 +35,40 @@ begin
                               from ticket_flights
                                        join flights on flights.flight_id = ticket_flights.flight_id
                               group by ticket_flights.flight_id, flights.aircraft_code)
-           , calculations as (select data_from_db.flight_id
-                                   , data_from_db.aircraft_code
+           , calculations as (select data_from_db.flight_id::bigint
+                                   , data_from_db.aircraft_code::varchar(3)
                                    , cast(data_from_db.seats_totally as smallint)                      as totally_seats
                                    , cast(data_from_db.tickets_sold as smallint)
                                    , (select round(((cast(data_from_db.tickets_sold as decimal)) /
                                                     (cast(data_from_db.seats_totally as decimal))),
                                                    2))                                                 as passenger_load_factor
+                                   , (select null::json) as metadata
                               from data_from_db)
-        select *
+
+        select calculations.flight_id
+             , calculations.aircraft_code
+             , calculations.totally_seats
+             , calculations.tickets_sold
+             , calculations.passenger_load_factor
+             , calculations.metadata
         from calculations
         where passenger_load_factor between p_load_factor_min and p_load_factor_max;
+
+    select into end_time clock_timestamp();
+    select into execution_time extract(epoch from end_time) - extract(epoch from start_time);
+    raise notice 'Выборка данных заняла: %', execution_time;
+    select into metadata json_build_object(
+                                 'start_time', start_time,
+                                 'end_time', end_time,
+                                 'function_name', 'demo.bookings.passenger_load_factor',
+                                 'execution_time', execution_time
+                         );
+     return query select null::bigint,
+                         null::varchar(3),
+                         null::smallint,
+                         null::smallint,
+                         null::decimal,
+                         metadata;
 end;
 $$;
 

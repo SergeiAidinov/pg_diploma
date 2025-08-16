@@ -1,0 +1,1 @@
+select fill_table_flights_load_factor();

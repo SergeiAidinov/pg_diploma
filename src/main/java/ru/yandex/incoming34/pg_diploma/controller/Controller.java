@@ -2,20 +2,22 @@ package ru.yandex.incoming34.pg_diploma.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.incoming34.pg_diploma.config.OpenApiConfig;
-import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactor;
+import ru.yandex.incoming34.pg_diploma.dto.LoadFactorsWithMetaData;
 import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
+import ru.yandex.incoming34.pg_diploma.service.CustomInMemoryCache;
 import ru.yandex.incoming34.pg_diploma.service.DataBaseAccessService;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
 public class Controller {
 
     private final DataBaseAccessService dataBaseAccessService;
+    private final CustomInMemoryCache customInMemoryCache;
 
-    public Controller(DataBaseAccessService dataBaseAccessService) {
+    public Controller(DataBaseAccessService dataBaseAccessService, CustomInMemoryCache customInMemoryCache) {
         this.dataBaseAccessService = dataBaseAccessService;
+        this.customInMemoryCache = customInMemoryCache;
     }
 
     @GetMapping("/about")
@@ -34,7 +36,12 @@ public class Controller {
     }
 
     @PostMapping("/passenger_load_factor/")
-    public List<PassengerLoadFactor> passengerLoadFactor(@RequestBody PassengerLoadFactorQuery passengerLoadFactorQuery) {
-       return dataBaseAccessService.passengerLoadFactor(passengerLoadFactorQuery);
+    public LoadFactorsWithMetaData passengerLoadFactor(@RequestBody PassengerLoadFactorQuery passengerLoadFactorQuery) {
+       return customInMemoryCache.getDataFromCacheOrCallLoadFactorFunction(passengerLoadFactorQuery, "passenger_load_factor");
+    }
+
+    @PostMapping("/passenger_load_factor_optimized/")
+    public LoadFactorsWithMetaData passengerLoadFactorOptimized(@RequestBody PassengerLoadFactorQuery passengerLoadFactorQuery) {
+        return customInMemoryCache.getDataFromCacheOrCallLoadFactorFunction(passengerLoadFactorQuery, "passenger_load_factor_optimized");
     }
 }
