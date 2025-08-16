@@ -41,7 +41,7 @@ begin
     select into metadata json_build_object(
             'start_time', start_time,
             'end_time', end_time,
-        'function_name', 'passenger_load_factor_optimized(numeric, numeric)',
+        'function_name', 'demo.bookings.passenger_load_factor_optimized(numeric, numeric)',
     'execution_time', execution_time
     );
     return query select NULL::bigint,
