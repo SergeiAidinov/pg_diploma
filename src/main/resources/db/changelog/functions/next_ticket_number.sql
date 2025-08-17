@@ -16,7 +16,7 @@ declare
     next_letter      character;
 begin
 
-    raise notice 'NUMERAL SYSTEM:, %', numeral_system;
+    raise notice 'NUMERAL SYSTEM: %', numeral_system;
     --v_max_identifier := (select ticket_no from tickets order by ticket_no desc limit 1);
     v_max_identifier := p_last_ticket;
     -- Если билетов ещё нет, начинаем с '0000000000001'
