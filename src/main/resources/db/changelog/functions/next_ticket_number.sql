@@ -3,8 +3,9 @@ create or replace function next_ticket_number(p_last_ticket text)
     language plpgsql as
 $$
 declare
-    chars            text := '0123456789abcdefghijklmnopqrstuvwxyz';
-    numeral_system   int  = length(chars);
+    char_sequence           text := '0123456789abcdefghijklmnopqrstuvwxyz';
+    numeral_system          int  = length(char_sequence);
+    last_symbol_in_sequence char = substr(char_sequence, numeral_system, 1);
     len              int;
     v_max_identifier text;
     result           text;
@@ -12,11 +13,12 @@ declare
     i                int;
     carry            boolean;
     idx_in_chars     int;
-    letter           text;
+    current_symbol          character;
     next_letter      character;
 begin
-
-    raise notice 'NUMERAL SYSTEM: %', numeral_system;
+    --raise notice 'last_symbol_in_sequence, %', last_symbol_in_sequence;
+    ----raise notice '<========================>';
+    ----raise notice 'NUMERAL SYSTEM: %', numeral_system;
     --v_max_identifier := (select ticket_no from tickets order by ticket_no desc limit 1);
     v_max_identifier := p_last_ticket;
     -- Если билетов ещё нет, начинаем с '0000000000001'
@@ -36,34 +38,47 @@ begin
     -- идём с конца строки
     for radix in reverse len..1
         loop
-            raise notice 'RADIX: %', radix;
-            letter := substr(v_max_identifier, radix, 1)::text;
-            raise notice 'LETTER: %', letter;
-            idx_in_chars := position(letter in chars);
-            raise notice 'IDX: %', idx_in_chars;
+            --raise notice 'RADIX: %', radix;
+            current_symbol := substr(v_max_identifier, radix, 1)::text;
+            --raise notice 'current_symbol, %', current_symbol;
+            if (current_symbol <> last_symbol_in_sequence) then
+                idx_in_chars := position(current_symbol in char_sequence);
+                --raise notice 'idx_in_chars: %', idx_in_chars;
+                next_letter = substr(char_sequence, idx_in_chars + 1, 1);
+                --raise notice 'NEXT_LETTER: %', next_letter;
+                select into result overlay(v_max_identifier placing next_letter from radix for 1);
+                --raise notice 'overlay(v_max_identifier placing next_letter from radix for 1), %', result;
+                select into result substr(result, 1, radix);
+                select into result rpad(result, len_max, '0');
+            exit;
+            end if;
+            ----raise notice 'LETTER: %', letter;
+            --idx_in_chars := position(current_symbol in char_sequence);
+            ----raise notice 'IDX: %', idx_in_chars;
 
             --ищем первый символ, который можно увеличить, и увеличиваем его
-            if (radix = len_max and idx_in_chars < numeral_system) then
-                raise notice 'увеличиваем последний символ';
-                next_letter = substr(chars, idx_in_chars + 1, 1);
-                raise notice 'NEXT_ LETTER: %', next_letter;
+           /* if (radix = len_max and idx_in_chars < numeral_system) then
+                ----raise notice 'увеличиваем последний символ';
+                next_letter = substr(char_sequence, idx_in_chars + 1, 1);
+                ----raise notice 'NEXT_ LETTER: %', next_letter;
                 select into result overlay(v_max_identifier placing next_letter from radix for 1);
                 /* select into result left(result, len_max - 1);
                  select into result rpad(result, len_max, '0');*/
-                raise notice 'RESULT: %', result;
+                ----raise notice 'RESULT: %', result;
                 exit;
             end if;
                 --если символ не является последним, то увеличиваем его, а следующие за ним символы обнуляем
                 if (radix < len_max) then
-                    raise notice 'увеличиваем символ в середине строки';
-                    next_letter = substr(chars, idx_in_chars + 1, 1);
-                    raise notice 'NEXT_ LETTER: %', next_letter;
+                    ----raise notice 'увеличиваем символ в середине строки';
+                    next_letter = substr(char_sequence, idx_in_chars + 1, 1);
+                    ----raise notice 'NEXT_ LETTER: %', next_letter;
                     select into result overlay(v_max_identifier placing next_letter from radix for 1);
                     select into result left(result, radix);
-                    raise notice 'left(result, radix - 1) % ', result;
+                    ----raise notice 'left(result, radix - 1) % ', result;
                     select into result rpad(result, len_max, '0');
+                    ----raise notice 'RESULT: %', result;
                     exit;
-                end if;
+                end if;*/
         end loop;
     return result;
 end;
