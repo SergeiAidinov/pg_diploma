@@ -32,4 +32,4 @@ INSERT INTO tickets(book_ref, passenger_id, passenger_name, contact_data)
 VALUES ('EDUTTR', '7002 843823', 'Sergei Aidinov', '{}');
 --INSERT INTO orders(description) VALUES ('Второй заказ');
 
-select * from tickets order by ticket_no desc limit 1;
+select * from tickets order by ticket_no desc limit 7;
