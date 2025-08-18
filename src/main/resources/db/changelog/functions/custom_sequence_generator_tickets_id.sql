@@ -1,4 +1,4 @@
-create or replace function next_ticket_number(p_last_ticket text)
+create or replace function custom_sequence_generator_tickets_id()
     returns text
     language plpgsql as
 $$
@@ -14,7 +14,7 @@ declare
     current_symbol   character;
     next_symbol      character;
 begin
-    v_max_identifier = p_last_ticket;
+    select into v_max_identifier tickets.ticket_no from tickets order by ticket_no desc limit 1;
     -- Если билетов ещё нет, начинаем с '0000000000001'
     if v_max_identifier is null then
         return '0000000000001';
