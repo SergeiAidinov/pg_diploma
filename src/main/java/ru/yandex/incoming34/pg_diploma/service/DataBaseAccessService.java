@@ -4,6 +4,7 @@ import org.postgresql.util.PGobject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import ru.yandex.incoming34.pg_diploma.dto.NewBookingQuery;
+import ru.yandex.incoming34.pg_diploma.dto.PassengerWithTicket;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -57,22 +58,16 @@ public class DataBaseAccessService {
             callableStatement.setString(2, newBookingQuery.getBookingReference());
             PGobject passenger = new PGobject();
             passenger.setType("passenger_and_ticket_price_type");
-            //passenger.setValue("(12345, 678.90)");
-            PGobject p1 = new PGobject();
+           /* PGobject p1 = new PGobject();
             p1.setType("passenger_and_ticket_price_type");
-            //p1.setValue("(1, 100.50)");
-           /* String passengerName = "\\\"" + newBookingQuery.getPassengerWithTicketList().get(0).getPassengerName() + "\\\"";
-            String passengerId = "\\\"" + newBookingQuery.getPassengerWithTicketList().get(0).getPassengerId()+ "\\\"";
-            String contactInfo = "{\\" + newBookingQuery.getPassengerWithTicketList().get(0).getContactInfo() + "\"}";*/
             String funcData = createPgComposite(newBookingQuery.getPassengerWithTicketList().get(0).getPassengerName(),
                     newBookingQuery.getPassengerWithTicketList().get(0).getPassengerId(),
                     newBookingQuery.getPassengerWithTicketList().get(0).getTicketPrice(),
                     newBookingQuery.getPassengerWithTicketList().get(0).getContactInfo()
             );
             System.out.println(funcData);
-            //p1.setValue("(\"Sergei Aidinov\", \"7002 842823\", 12000, \"{\\\"phone\\\": \\\"+79168132746\\\"}\")");
-            p1.setValue(funcData);
-            PGobject[] passengers = new PGobject[] { p1};
+            p1.setValue(funcData);*/
+            PGobject[] passengers = createPassengerWithTicketArray(newBookingQuery.getPassengerWithTicketList());
             java.sql.Array arr = connection.createArrayOf("passenger_and_ticket_price_type", passengers);
             callableStatement.setArray(3, arr);
             ResultSet rs = callableStatement.executeQuery();
@@ -83,14 +78,28 @@ public class DataBaseAccessService {
         return true;
     }
 
-    private  String createPgComposite(String name, String passport, BigDecimal amount, String json) {
-        // Экранируем двойные кавычки внутри строк
-        String escapedName = name.replace("\"", "\\\"");
-        String escapedPassport = passport.replace("\"", "\\\"");
-        String escapedJson = json.replace("\"", "\\\\\\\"");
+    private PGobject[] createPassengerWithTicketArray(List<PassengerWithTicket> passengerWithTicketList) throws SQLException {
+        List<PGobject> passengers = new ArrayList<>();
+        for (PassengerWithTicket passengerWithTicket : passengerWithTicketList) {
+            PGobject pGobject = new PGobject();
+            pGobject.setType("passenger_and_ticket_price_type");
+            String funcData = createPgComposite(passengerWithTicket.getPassengerName(),
+                    passengerWithTicket.getPassengerId(),
+                    passengerWithTicket.getTicketPrice(),
+                    passengerWithTicket.getContactInfo().toString()
+            );
+            System.out.println(funcData);
+            pGobject.setValue(funcData);
+            passengers.add(pGobject);
+        }
+        return Arrays.copyOf(passengers.toArray(), passengers.size(), PGobject[].class);
+    }
 
-        // Формируем строку с нужными кавычками для Postgres
+    private  String createPgComposite(String name, String passengerId, BigDecimal ticketPrice, String contactInfo) {
         return String.format("(\\\"%s\\\", \\\"%s\\\", %s, \\\"%s\\\")",
-                escapedName, escapedPassport, amount, escapedJson);
+                name.replace("\"", "\\\""),
+                passengerId.replace("\"", "\\\""),
+                ticketPrice,
+                contactInfo.replace("\"", "\\\\\\\""));
     }
 }

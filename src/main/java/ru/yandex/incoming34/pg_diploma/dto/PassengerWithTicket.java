@@ -1,5 +1,6 @@
 package ru.yandex.incoming34.pg_diploma.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.core.util.Json;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +14,5 @@ public class PassengerWithTicket {
     private final String passengerName;
     private final String passengerId;
     private final BigDecimal ticketPrice;
-    private final String contactInfo;
+    private final JsonNode contactInfo;
 }

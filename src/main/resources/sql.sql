@@ -35,26 +35,32 @@ VALUES ('EDUTTR', '7002 843823', 'Sergei Aidinov', '{}');
 select * from tickets order by ticket_no desc limit 7;
 
 {
-  "flightId": 2880,
-  "bookingReference": "EDUTTR",
-  "passengerWithTicketList": [
-    {
-      "passengerName": "Sergei Aidinov",
-      "passengerId": "7002 842823",
-      "ticketPrice": 8000.00,
-      "contactInfo": "{\"phone": "+79168132746\"}"
-},
-{
-      "passengerName": "James Arthur Gosling",
-      "passengerId": "12345 QQ",
-      "ticketPrice": 12000,
-      "contactInfo": "{\"phone": "+19573219753\"}"
-},
-{
-      "passengerName": "Richard Matthew Stallman",
-      "passengerId": "1603 1953g",
-      "ticketPrice": 1400,
-      "contactInfo": "{\"phone": "+1593218653075\"}"
-}
-  ]
+    "flightId": 2880,
+    "bookingReference": "EDUTTR",
+    "passengerWithTicketList": [
+        {
+            "passengerName": "Sergei Aidinov",
+            "passengerId": "7002 842823",
+            "ticketPrice": 12000,
+            "contactInfo": {
+                "phone": "+79168132746"
+            }
+        },
+        {
+            "passengerName": "James Arthur Gosling",
+            "passengerId": "12345 QQ",
+            "ticketPrice": 12000,
+            "contactInfo": {
+                "phone": "+19573219753"
+            }
+        },
+        {
+            "passengerName": "Richard Matthew Stallman",
+            "passengerId": "1603 1953g",
+            "ticketPrice": 1400,
+            "contactInfo": {
+                "phone": "+1593218653075"
+            }
+        }
+    ]
 }
