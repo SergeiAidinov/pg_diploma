@@ -52,30 +52,23 @@ public class DataBaseAccessService {
     }
 
     public boolean newBooking(NewBookingQuery newBookingQuery) {
+        boolean result = false;
         try (Connection connection = dataSource.getConnection()){
             CallableStatement callableStatement = connection.prepareCall("{call create_booking(?, ?, ?)}");
             callableStatement.setLong(1, newBookingQuery.getFlightId());
             callableStatement.setString(2, newBookingQuery.getBookingReference());
             PGobject passenger = new PGobject();
             passenger.setType("passenger_and_ticket_price_type");
-           /* PGobject p1 = new PGobject();
-            p1.setType("passenger_and_ticket_price_type");
-            String funcData = createPgComposite(newBookingQuery.getPassengerWithTicketList().get(0).getPassengerName(),
-                    newBookingQuery.getPassengerWithTicketList().get(0).getPassengerId(),
-                    newBookingQuery.getPassengerWithTicketList().get(0).getTicketPrice(),
-                    newBookingQuery.getPassengerWithTicketList().get(0).getContactInfo()
-            );
-            System.out.println(funcData);
-            p1.setValue(funcData);*/
             PGobject[] passengers = createPassengerWithTicketArray(newBookingQuery.getPassengerWithTicketList());
             java.sql.Array arr = connection.createArrayOf("passenger_and_ticket_price_type", passengers);
             callableStatement.setArray(3, arr);
             ResultSet rs = callableStatement.executeQuery();
-
+            rs.next();
+            result = rs.getBoolean("result");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return true;
+        return result;
     }
 
     private PGobject[] createPassengerWithTicketArray(List<PassengerWithTicket> passengerWithTicketList) throws SQLException {
@@ -95,7 +88,7 @@ public class DataBaseAccessService {
         return Arrays.copyOf(passengers.toArray(), passengers.size(), PGobject[].class);
     }
 
-    private  String createPgComposite(String name, String passengerId, BigDecimal ticketPrice, String contactInfo) {
+    private String createPgComposite(String name, String passengerId, BigDecimal ticketPrice, String contactInfo) {
         return String.format("(\\\"%s\\\", \\\"%s\\\", %s, \\\"%s\\\")",
                 name.replace("\"", "\\\""),
                 passengerId.replace("\"", "\\\""),
