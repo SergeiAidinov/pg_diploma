@@ -10,6 +10,33 @@ CREATE TABLE orders (
                         description text
 );
 
+create function test_func(p_qty bigint, p_last_ticket text) returns void
+    language plpgsql
+as
+$$
+declare previous_value varchar(13) = p_last_ticket;
+        start_time timestamp;
+begin
+    select into start_time clock_timestamp();
+    for i in 1..p_qty loop
+            previous_value = next_ticket_number(previous_value);
+            if (length(previous_value) = 13) then
+                raise notice 'order: % RES: %', i, previous_value;
+            else raise notice 'ERROR';
+            end if;
+        end loop;
+
+    raise notice 'exec_time: %', (select (clock_timestamp() - start_time));
+end;
+
+
+
+$$;
+
+alter function test_func(bigint, text) owner to postgres;
+
+
+
 CREATE or replace TRIGGER orders_set_id_trg
     BEFORE INSERT ON tickets
     FOR EACH ROW
