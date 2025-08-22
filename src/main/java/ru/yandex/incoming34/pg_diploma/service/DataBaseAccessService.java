@@ -3,10 +3,10 @@ package ru.yandex.incoming34.pg_diploma.service;
 import org.postgresql.util.PGobject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import ru.yandex.incoming34.pg_diploma.dto.LoadFactorsWithMetaData;
 import ru.yandex.incoming34.pg_diploma.dto.NewBookingQuery;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -57,11 +57,21 @@ public class DataBaseAccessService {
             callableStatement.setString(2, newBookingQuery.getBookingReference());
             PGobject passenger = new PGobject();
             passenger.setType("passenger_and_ticket_price_type");
-            passenger.setValue("(12345, 678.90)");
+            //passenger.setValue("(12345, 678.90)");
             PGobject p1 = new PGobject();
             p1.setType("passenger_and_ticket_price_type");
             //p1.setValue("(1, 100.50)");
-            p1.setValue("(\"Sergei Aidinov\", \"7002 842823\", 12000, \"{\\\"phone\\\": \\\"+79168132746\\\"}\")");
+           /* String passengerName = "\\\"" + newBookingQuery.getPassengerWithTicketList().get(0).getPassengerName() + "\\\"";
+            String passengerId = "\\\"" + newBookingQuery.getPassengerWithTicketList().get(0).getPassengerId()+ "\\\"";
+            String contactInfo = "{\\" + newBookingQuery.getPassengerWithTicketList().get(0).getContactInfo() + "\"}";*/
+            String funcData = createPgComposite(newBookingQuery.getPassengerWithTicketList().get(0).getPassengerName(),
+                    newBookingQuery.getPassengerWithTicketList().get(0).getPassengerId(),
+                    newBookingQuery.getPassengerWithTicketList().get(0).getTicketPrice(),
+                    newBookingQuery.getPassengerWithTicketList().get(0).getContactInfo()
+            );
+            System.out.println(funcData);
+            //p1.setValue("(\"Sergei Aidinov\", \"7002 842823\", 12000, \"{\\\"phone\\\": \\\"+79168132746\\\"}\")");
+            p1.setValue(funcData);
             PGobject[] passengers = new PGobject[] { p1};
             java.sql.Array arr = connection.createArrayOf("passenger_and_ticket_price_type", passengers);
             callableStatement.setArray(3, arr);
@@ -71,5 +81,16 @@ public class DataBaseAccessService {
             throw new RuntimeException(e);
         }
         return true;
+    }
+
+    private  String createPgComposite(String name, String passport, BigDecimal amount, String json) {
+        // Экранируем двойные кавычки внутри строк
+        String escapedName = name.replace("\"", "\\\"");
+        String escapedPassport = passport.replace("\"", "\\\"");
+        String escapedJson = json.replace("\"", "\\\\\\\"");
+
+        // Формируем строку с нужными кавычками для Postgres
+        return String.format("(\\\"%s\\\", \\\"%s\\\", %s, \\\"%s\\\")",
+                escapedName, escapedPassport, amount, escapedJson);
     }
 }
