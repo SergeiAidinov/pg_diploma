@@ -31,6 +31,8 @@
 
     <include
             file="db/changelog/functions/passenger_load_factor_optimized.xml"/>
+    <include
+            file="db/changelog/functions/create_booking.xml"/>
 
 
     <include
