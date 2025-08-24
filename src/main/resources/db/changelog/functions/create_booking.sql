@@ -1,18 +1,20 @@
 create or replace function create_booking(
     p_flight_id bigint, p_book_ref varchar(6),
-    arr passenger_and_ticket_price_type[]) returns boolean
+    arr passenger_and_ticket_price_type[]) returns text
     language plpgsql as
 $$
 declare
     elem passenger_and_ticket_price_type;
     v_total_amount int = 0;
+    result text = 'Success';
 begin
+    begin
     raise notice 'STATUS: %' , (select status from flights where flight_id = p_flight_id);
     if (select status from flights where flight_id = p_flight_id) <> 'Scheduled' then
-        raise exception 'Flight status has to be Scheduled';
+        raise exception using errcode = 'P0001', message = 'Flight status has to be Scheduled';
     end if;
     if exists(select * from bookings where bookings.book_ref = p_book_ref) then
-        raise exception 'Booking already exists';
+        raise exception using errcode = 'P0002', message = 'Booking already exists';
     end if;
     insert into bookings (book_ref, book_date, total_amount) values (p_book_ref, (select current_timestamp), 1.00);
 
@@ -32,6 +34,13 @@ begin
             end if;
         end loop;
     update bookings set total_amount = v_total_amount where book_ref = p_book_ref;
-    return true;
+exception
+    when sqlstate 'P0001' then
+        result = 'Flight status has to be Scheduled';
+    when sqlstate 'P0002' then
+        result = 'Booking already exists';
+
 end;
+    return result;
+    end;
 $$

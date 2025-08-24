@@ -51,8 +51,8 @@ public class DataBaseAccessService {
         return result;
     }
 
-    public boolean newBooking(NewBookingQuery newBookingQuery) {
-        boolean result = false;
+    public String newBooking(NewBookingQuery newBookingQuery) {
+       String result = null;
         try (Connection connection = dataSource.getConnection()){
             CallableStatement callableStatement = connection.prepareCall("{call create_booking(?, ?, ?)}");
             callableStatement.setLong(1, newBookingQuery.getFlightId());
@@ -64,7 +64,7 @@ public class DataBaseAccessService {
             callableStatement.setArray(3, arr);
             ResultSet rs = callableStatement.executeQuery();
             rs.next();
-            result = rs.getBoolean("result");
+            result = rs.getString("result");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

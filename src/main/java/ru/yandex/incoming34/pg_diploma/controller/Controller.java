@@ -8,7 +8,6 @@ import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
 import ru.yandex.incoming34.pg_diploma.service.CustomInMemoryCache;
 import ru.yandex.incoming34.pg_diploma.service.DataBaseAccessService;
 
-import java.io.Reader;
 import java.util.Map;
 
 @RestController
@@ -48,8 +47,7 @@ public class Controller {
     }
 
     @PostMapping("/new_booking/")
-    public Boolean newBooking(@RequestBody NewBookingQuery newBookingQuery) {
-         dataBaseAccessService.newBooking(newBookingQuery);
-         return true;
+    public String newBooking(@RequestBody NewBookingQuery newBookingQuery) {
+         return dataBaseAccessService.newBooking(newBookingQuery);
     }
 }
