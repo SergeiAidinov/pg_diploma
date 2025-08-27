@@ -12,16 +12,25 @@
     <include
             file="db/changelog/functions/passenger_load_factor.xml"/>
     <include
-            file="db/changelog/indexes/ticket_flights_idx.xml"/>
-    <include
             file="db/changelog/tables/flights_load_factor.xml"/>
     <include
             file="db/changelog/functions/fill_table_flights_load_factor.xml"/>
-
     <include
             file="db/changelog/calls/call_fuction_fill_table_flights_load_factor.xml"/>
     <include
+            file="db/changelog/functions/custom_sequence_generator_tickets_id.xml"/>
+    <include
+            file="db/changelog/types/passenger_and_ticket_price_type.xml"/>
+    <include
+            file="db/changelog/triggers/ticket_no.xml"/>
+    <include
+            file="db/changelog/triggers/ticket_no_trigger.xml"/>
+    <include
             file="db/changelog/functions/passenger_load_factor_optimized.xml"/>
+    <include
+            file="db/changelog/functions/create_booking.xml"/>
+    <include
+            file="db/changelog/indexes/ticket_flights_idx.xml"/>
     <include
             file="db/changelog/indexes/flights_load_factor_idx.xml"/>
 

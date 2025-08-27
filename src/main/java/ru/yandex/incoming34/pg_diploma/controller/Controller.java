@@ -3,6 +3,7 @@ package ru.yandex.incoming34.pg_diploma.controller;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.incoming34.pg_diploma.config.OpenApiConfig;
 import ru.yandex.incoming34.pg_diploma.dto.LoadFactorsWithMetaData;
+import ru.yandex.incoming34.pg_diploma.dto.NewBookingQuery;
 import ru.yandex.incoming34.pg_diploma.dto.PassengerLoadFactorQuery;
 import ru.yandex.incoming34.pg_diploma.service.CustomInMemoryCache;
 import ru.yandex.incoming34.pg_diploma.service.DataBaseAccessService;
@@ -43,5 +44,10 @@ public class Controller {
     @PostMapping("/passenger_load_factor_optimized/")
     public LoadFactorsWithMetaData passengerLoadFactorOptimized(@RequestBody PassengerLoadFactorQuery passengerLoadFactorQuery) {
         return customInMemoryCache.getDataFromCacheOrCallLoadFactorFunction(passengerLoadFactorQuery, "passenger_load_factor_optimized");
+    }
+
+    @PostMapping("/new_booking/")
+    public String newBooking(@RequestBody NewBookingQuery newBookingQuery) {
+         return dataBaseAccessService.newBooking(newBookingQuery);
     }
 }

@@ -1,9 +1,13 @@
 package ru.yandex.incoming34.pg_diploma.service;
 
+import org.postgresql.util.PGobject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import ru.yandex.incoming34.pg_diploma.dto.NewBookingQuery;
+import ru.yandex.incoming34.pg_diploma.dto.PassengerWithTicket;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -45,5 +49,50 @@ public class DataBaseAccessService {
             throw new RuntimeException(e);
         }
         return result;
+    }
+
+    public String newBooking(NewBookingQuery newBookingQuery) {
+       String result = null;
+        try (Connection connection = dataSource.getConnection()){
+            CallableStatement callableStatement = connection.prepareCall("{call create_booking(?, ?, ?)}");
+            callableStatement.setLong(1, newBookingQuery.getFlightId());
+            callableStatement.setString(2, newBookingQuery.getBookingReference());
+            PGobject passenger = new PGobject();
+            passenger.setType("passenger_and_ticket_price_type");
+            PGobject[] passengers = createPassengerWithTicketArray(newBookingQuery.getPassengerWithTicketList());
+            java.sql.Array arr = connection.createArrayOf("passenger_and_ticket_price_type", passengers);
+            callableStatement.setArray(3, arr);
+            ResultSet rs = callableStatement.executeQuery();
+            rs.next();
+            result = rs.getString("result");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    private PGobject[] createPassengerWithTicketArray(List<PassengerWithTicket> passengerWithTicketList) throws SQLException {
+        List<PGobject> passengers = new ArrayList<>();
+        for (PassengerWithTicket passengerWithTicket : passengerWithTicketList) {
+            PGobject pGobject = new PGobject();
+            pGobject.setType("passenger_and_ticket_price_type");
+            String funcData = createPgComposite(passengerWithTicket.getPassengerName(),
+                    passengerWithTicket.getPassengerId(),
+                    passengerWithTicket.getTicketPrice(),
+                    passengerWithTicket.getContactInfo().toString()
+            );
+            System.out.println(funcData);
+            pGobject.setValue(funcData);
+            passengers.add(pGobject);
+        }
+        return Arrays.copyOf(passengers.toArray(), passengers.size(), PGobject[].class);
+    }
+
+    private String createPgComposite(String name, String passengerId, BigDecimal ticketPrice, String contactInfo) {
+        return String.format("(\\\"%s\\\", \\\"%s\\\", %s, \\\"%s\\\")",
+                name.replace("\"", "\\\""),
+                passengerId.replace("\"", "\\\""),
+                ticketPrice,
+                contactInfo.replace("\"", "\\\\\\\""));
     }
 }
