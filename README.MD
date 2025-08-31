@@ -13,7 +13,7 @@
 «Проектирование и реализация логики запросов для базы данных авиаперевозок на базе PostgreSQL и PL/pgSQL»</h2>
 
 | Видеопрезентация:  |https://disk.yandex.ru/i/2f25iC6lmLAFFQ | 
-| :---:  | :---: | 
+| ---:  | :--- | 
 |Презентация PowerPoint: |  https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx  |
 | Презентация PDF: | https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf  |
  
