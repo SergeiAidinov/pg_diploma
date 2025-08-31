@@ -14,15 +14,15 @@
 
 <table>
   <tr>
-    <th style="text-align: right;"> Видеопрезентация:</th>
+    <td style="text-align: right;"> Видеопрезентация:</td>
     <td>https://disk.yandex.ru/i/2f25iC6lmLAFFQ</td>
   </tr>
 <tr>
-<th style="text-align: right;">Презентация PowerPoint:</th>
+<td style="text-align: right;">Презентация PowerPoint:</td>
  <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx </td>
 </tr>
   <tr>
-    <td>Презентация PDF:</td>
+    <td style="text-align: right;">Презентация PDF:</td>
     <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf</td>
   </tr>
 </table>
