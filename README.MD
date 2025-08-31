@@ -25,12 +25,13 @@
 <li> Подготовка презентации и демонстрация работы системы на тестовых данных.</li>
 </ol>
 
-Deploy DB:
 
-sergei@debian:/$ psql -U sergei -d postgres -a -f "/opt/Demo_pgsql/demo-big-20170815.sql"
+###### Deploy DB:
 
-DB size:
+###### sergei@debian:/$ psql -U sergei -d postgres -a -f "/opt/Demo_pgsql/demo-big-20170815.sql"
 
-SELECT pg_size_pretty( pg_database_size( 'demo' ) );
+###### DB size:
 
-Подключение к базе: PGPASSWORD=postgres psql -h localhost -U postgres -d demo
+###### SELECT pg_size_pretty( pg_database_size( 'demo' ) );
+
+###### Подключение к базе: PGPASSWORD=postgres psql -h localhost -U postgres -d demo
