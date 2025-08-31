@@ -14,7 +14,7 @@
 
 <table>
   <tr>
-    <td style="text-align: right;"> Видеопрезентация:</td>
+    <th style="text-align: right;"> Видеопрезентация:</th>
     <td>https://disk.yandex.ru/i/2f25iC6lmLAFFQ</td>
   </tr>
 <tr>
