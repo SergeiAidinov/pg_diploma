@@ -12,22 +12,16 @@
 <h2>Наименование дипломной работы:
 «Проектирование и реализация логики запросов для базы данных авиаперевозок на базе PostgreSQL и PL/pgSQL»</h2>
 
-| | |
-| ---:  | :--- | 
-| Видеопрезентация:  |https://disk.yandex.ru/i/2f25iC6lmLAFFQ | 
-|Презентация PowerPoint: |  https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx  |
-| Презентация PDF: | https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf  |
-
 <table>
   <tr>
-    <td>Пункт 1</td>
-    <td>Пункт 2</td>
-    <td>Пункт 3</td>
+    <td> Видеопрезентация:</td>
+    <td>Презентация PowerPoint:</td>
+    <td>Презентация PDF:</td>
   </tr>
   <tr>
-    <td>Пункт 4</td>
-    <td>Пункт 5</td>
-    <td>Пункт 6</td>
+    <td>https://disk.yandex.ru/i/2f25iC6lmLAFFQ</td>
+    <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx </td>
+    <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf</td>
   </tr>
 </table>
 
