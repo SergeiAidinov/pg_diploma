@@ -14,6 +14,7 @@
 
 Видеопрезентация: https://disk.yandex.ru/i/2f25iC6lmLAFFQ <br>
 Презентация PowerPoint: https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx <br>
+Презентация PDF: https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf <br>
 
 Задачи, выполняемые в рамках работы:
 1. Разработка функций на языке PL/pgSQL для автоматизации поиска сведений по заданным поисковым критериям.
