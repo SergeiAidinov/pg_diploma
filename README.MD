@@ -14,44 +14,18 @@
 
 <table>
   <tr>
-    <td style="text-align: right;"> Видеопрезентация:</td>
+    <td> Видеопрезентация:</td>
     <td>https://disk.yandex.ru/i/2f25iC6lmLAFFQ</td>
   </tr>
 <tr>
-<td style="text-align: right;">Презентация PowerPoint:</td>
+<td>Презентация PowerPoint:</td>
  <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx </td>
 </tr>
   <tr>
-    <td style="text-align: right;">Презентация PDF:</td>
+    <td>Презентация PDF:</td>
     <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf</td>
   </tr>
 </table>
-
-<table border="1">
-  <tr>
-    <th style="text-align: left;">Левый</th>
-    <th style="text-align: center;">Центр</th>
-    <th style="text-align: right;">Правый</th>
-  </tr>
-  <tr>
-    <td style="text-align: left;">Пункт 1</td>
-    <td style="text-align: center;">Пункт 2</td>
-    <td style="text-align: right;">10</td>
-  </tr>
-  <tr>
-    <td style="text-align: left;">Пункт 3</td>
-    <td style="text-align: center;">Пункт 4</td>
-    <td style="text-align: right;">200</td>
-  </tr>
-  <tr>
-    <td style="text-align: left;">Пункт 5</td>
-    <td style="text-align: center;">Пункт 6</td>
-    <td style="text-align: right;">300</td>
-  </tr>
-</table>
-
-
-
  
 <h3>Задачи, выполняемые в рамках работы:</h3>
 <ol>
