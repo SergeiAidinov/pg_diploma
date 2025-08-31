@@ -18,10 +18,19 @@
 |Презентация PowerPoint: |  https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx  |
 | Презентация PDF: | https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf  |
 
-|   |   |   |
-|---|---|---|
-| Пункт 1 | Пункт 2 | Пункт 3 |
-| Пункт 4 | Пункт 5 | Пункт 6 |
+<table>
+  <tr>
+    <td>Пункт 1</td>
+    <td>Пункт 2</td>
+    <td>Пункт 3</td>
+  </tr>
+  <tr>
+    <td>Пункт 4</td>
+    <td>Пункт 5</td>
+    <td>Пункт 6</td>
+  </tr>
+</table>
+
 
  
 <h3>Задачи, выполняемые в рамках работы:</h3>
