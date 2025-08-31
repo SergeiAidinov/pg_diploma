@@ -8,7 +8,7 @@
 ![psql](https://img.shields.io/badge/psql-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
 
-<h2 style="color:#e63946">Наименование дипломной работы:
+<h2 style="color:green;">Наименование дипломной работы:
 «Проектирование и реализация логики запросов для базы данных авиаперевозок на базе PostgreSQL и PL/pgSQL»</h2>
 
 
