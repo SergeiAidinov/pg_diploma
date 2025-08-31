@@ -10,8 +10,10 @@
 
 <h2 style="color:green;">Наименование дипломной работы:
 «Проектирование и реализация логики запросов для базы данных авиаперевозок на базе PostgreSQL и PL/pgSQL»</h2>
-<h2 style="color:#2ecc71;">Зелёный заголовок</h2>
 
+<p align="center">
+  ![Зелёный заголовок](https://img.shields.io/badge/-Зелёный%20заголовок-2ecc71?style=for-the-badge)
+</p>
 
 
 Видеопрезентация: https://disk.yandex.ru/i/2f25iC6lmLAFFQ <br>
