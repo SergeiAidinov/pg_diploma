@@ -1,9 +1,14 @@
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![PL/pgSQL](https://img.shields.io/badge/PL%2FpgSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![DBeaver](https://img.shields.io/badge/DBeaver-372923?style=for-the-badge&logo=dbeaver&logoColor=white)
+![Liquibase](https://img.shields.io/badge/Liquibase-2962FF?style=for-the-badge&logo=liquibase&logoColor=white)
+
 <h2>Наименование дипломной работы:
 «Проектирование и реализация логики запросов для базы данных авиаперевозок на базе PostgreSQL и PL/pgSQL»</h2>
 
 
-Видеопрезентация: https://disk.yandex.ru/i/2f25iC6lmLAFFQ
-Презентация PowerPoint: https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx
+Видеопрезентация: https://disk.yandex.ru/i/2f25iC6lmLAFFQ <br>
+Презентация PowerPoint: https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx <br>
 
 Задачи, выполняемые в рамках работы:
 1. Разработка функций на языке PL/pgSQL для автоматизации поиска сведений по заданным поисковым критериям.
