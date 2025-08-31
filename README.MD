@@ -15,10 +15,8 @@
 | Видеопрезентация:  |https://disk.yandex.ru/i/2f25iC6lmLAFFQ | 
 | :---:  | :---: | 
 |Презентация PowerPoint: |  https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx  |
-  <br>
-Презентация PowerPoint: https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx <br>
-Презентация PDF: https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf <br>
-
+| Презентация PDF: | https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pdf  |
+ 
 <h3>Задачи, выполняемые в рамках работы:</h3>
 <ol>
 <li> Разработка функций на языке PL/pgSQL для автоматизации поиска сведений по заданным поисковым критериям.</li>
