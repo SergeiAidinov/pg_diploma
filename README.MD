@@ -27,6 +27,30 @@
   </tr>
 </table>
 
+<table border="1">
+  <tr>
+    <th style="text-align: left;">Левый</th>
+    <th style="text-align: center;">Центр</th>
+    <th style="text-align: right;">Правый</th>
+  </tr>
+  <tr>
+    <td style="text-align: left;">Пункт 1</td>
+    <td style="text-align: center;">Пункт 2</td>
+    <td style="text-align: right;">10</td>
+  </tr>
+  <tr>
+    <td style="text-align: left;">Пункт 3</td>
+    <td style="text-align: center;">Пункт 4</td>
+    <td style="text-align: right;">200</td>
+  </tr>
+  <tr>
+    <td style="text-align: left;">Пункт 5</td>
+    <td style="text-align: center;">Пункт 6</td>
+    <td style="text-align: right;">300</td>
+  </tr>
+</table>
+
+
 
  
 <h3>Задачи, выполняемые в рамках работы:</h3>
