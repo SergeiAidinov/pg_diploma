@@ -18,7 +18,7 @@
     <td>https://disk.yandex.ru/i/2f25iC6lmLAFFQ</td>
   </tr>
 <tr>
-<td>Презентация PowerPoint:</td>
+<th style="text-align: right;">Презентация PowerPoint:</th>
  <td>https://github.com/SergeiAidinov/pg_diploma/blob/master/src/main/resources/Presentation.pptx </td>
 </tr>
   <tr>
