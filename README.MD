@@ -7,13 +7,14 @@
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000?style=for-the-badge&logo=intellijidea&logoColor=white)
 ![psql](https://img.shields.io/badge/psql-336791?style=for-the-badge&logo=postgresql&logoColor=white)
 ![Bash](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
+![header](https://img.shields.io/badge/-Зелёный%20заголовок-2ecc71?style=for-the-badge)
 
 <h2>Наименование дипломной работы:
 «Проектирование и реализация логики запросов для базы данных авиаперевозок на базе PostgreSQL и PL/pgSQL»</h2>
 
-<p align="center">
-  ![header](https://img.shields.io/badge/-Зелёный%20заголовок-2ecc71?style=for-the-badge)
-</p>
+
+ 
+
 
 
 Видеопрезентация: https://disk.yandex.ru/i/2f25iC6lmLAFFQ <br>
